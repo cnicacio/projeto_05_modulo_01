@@ -1,12 +1,12 @@
-from character import Character
-from time import sleep
-from random import randint
-from datetime import datetime
-from clock import Time
-import os
+from character import Character #biblioteca criada para as informações dos personagens.
+from time import sleep #biblioteca criada para o jogo de interação.
+from random import randint #biblioteca que gera aleatoriedade onde solicitado.
+from datetime import datetime #biblioteca que atribui ao jogo a data em que ele está sendo jogado.
+from clock import Time #biblioteca criada para o jogo de interação.
+import os #Biblioteca do sistema operacional.
 
 def lin():
-    print('▬▬▬' * 32)
+    print('▬▬▬' * 32)       #A arte de relógio mostrada durante a execução do jogo.
 
 if __name__ == '__main__':
     character = Character('',0,0,0,0,0)
@@ -47,18 +47,18 @@ if __name__ == '__main__':
     {clock}
     O DESPERTADOR TOCOU E COMEÇA MAIS UM DIA DE TRABALHO NA JORNADA DO ESTAGIÁRIO.
     ''')
-
+#Inicio da sequência de ações indicadas pelo usuário.
     ready = input('Você está preparado para jogar [S/N]? ').strip().upper()[0]
     while ready not in 'SN':
         ready = input('Opção inválida! Você está preparado para jogar [S/N]? ').strip().upper()[0]
     if ready == 'S':
-        character.clean() # limpa o console
-        character.choice() # executa a função escolha para verificar o personagem
-        character.clean() # limpa o console
+        character.clean() # limpa o console.
+        character.choice() # executa a função escolha para verificar o personagem.
+        character.clean() # limpa o console.
         print(clock)
-        print(character) # status inicial do personagem
+        print(character) # status inicial do personagem.
         lin()
-        while True: # enquanto o jogador não quiser sair do jogo ou não matar o personagem
+        while True: # enquanto o jogador não quiser sair do jogo ou não matar o personagem.
             wakeup = str(input(f'''
             Fase {character.stage:02d}
             {character.name}, olha a hora! 
@@ -67,9 +67,9 @@ if __name__ == '__main__':
             [1] Levantar
             [2] "Só mais 5 minutinhos e eu levanto"
             [0] SAIR DO JOGO
-
-            ''')).strip().upper()[0] # opção do jogador
-            while wakeup not in '012': # se o jogador inserir uma opção inválida, perguntará novamente até que a opção seja 0, 1 ou 2
+            ''')).strip().upper()[0] # opção do jogador.
+# se o jogador inserir uma opção inválida, perguntará novamente até que a opção seja 0, 1 ou 2.
+            while wakeup not in '012': 
                 wakeup = str(input(f'''
             OPÇÃO INVÁLIDA!
             {character.name}, olha a hora! 
@@ -78,8 +78,7 @@ if __name__ == '__main__':
             [1] Levantar
             [2] "Só mais 5 minutinhos e eu levanto"
             [0] SAIR DO JOGO
-
-                ''')).strip().upper()[0]
+            ''')).strip().upper()[0]
             while (wakeup=='2'):
                 character.wakeup(wakeup)
                 character.clean()
@@ -95,10 +94,9 @@ if __name__ == '__main__':
             O que você quer fazer?
             [1] Levantar
             [2] "Só mais 5 minutinhos e eu levanto"
-            [0] SAIR DO JOGO
-
-            ''')).strip().upper()[0]
-                while wakeup not in '012': # se o jogador inserir uma opção inválida, perguntará novamente até que a opção seja 0, 1 ou 2
+            [0] SAIR DO JOGO ''')).strip().upper()[0]
+# se o jogador inserir uma opção inválida, perguntará novamente até que a opção seja 0, 1 ou 2
+                while wakeup not in '012': 
                     wakeup = str(input(f'''
             OPÇÃO INVÁLIDA!
             {character.name}, olha a hora! 
@@ -106,11 +104,11 @@ if __name__ == '__main__':
             O que você quer fazer?
             [1] Levantar
             [2] "Só mais 5 minutinhos e eu levanto"
-            [0] SAIR DO JOGO
-
-                    ''')).strip().upper()[0]
-            if (wakeup == '1'): # se o jogador escolher 1 ou 2, executa a função levantar() na classe Personagem
-                character.wakeup(wakeup) # dentro da função fazer um while levantar == '2' para incrementar mais tempo no relógio enquanto o personagem não levanta
+            [0] SAIR DO JOGO''')).strip().upper()[0]
+# se o jogador escolher 1 ou 2, executa a função levantar() na classe Personagem.
+# dentro da função fazer um while levantar == '2' para avançar o tempo no relógio enquanto o personagem não levanta
+            if (wakeup == '1'): 
+                character.wakeup(wakeup) 
                 character.clean()
                 clock.forward(5)
                 character.statusDef()
@@ -120,12 +118,12 @@ if __name__ == '__main__':
                 character.next_stage() # passa de fase no jogo
                 print(f'Carregando a fase {character.stage:02d}')
                 sleep(2)
-            else: # se o jogador pressionar 0, ele desiste do jogo e o jogo encerra com a mensagem contida na função desistir() na classe Personagem
-                print(character.giveup())
+            else: # se o jogador pressionar 0, ele desiste do jogo e o jogo encerra com a mensagem 
+                print(character.giveup()) #contida na função desistir() na classe Personagem
                 break
-
-            if character.statusPar() == True: # se o jogador atingir uma das condições da função status() na classe Personagem, o jogo encerra porque o jogador perdeu
-                character.statusPar()
+# se o jogador atingir uma das condições da função status() na classe Personagem, o jogo encerra porque o jogador perdeu.
+            if character.statusPar() == True: 
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -201,7 +199,7 @@ if __name__ == '__main__':
                 break
 
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -253,7 +251,7 @@ if __name__ == '__main__':
                 break
             
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -280,7 +278,7 @@ if __name__ == '__main__':
             [0] SAIR DO JOGO
 
                 ''')).strip().upper()[0]
-            
+          
             if (oneway == '1'):
                 character.route(oneway)
                 character.clean()
@@ -316,7 +314,7 @@ if __name__ == '__main__':
                 break
             
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -338,8 +336,8 @@ if __name__ == '__main__':
             [0] SAIR DO JOGO
 
                 ''')).strip().upper()[0]
-
-                while situation1 not in '0123':
+#Somente as opções 1, 2, 3 e 0 são dadas ao usuário, qualquer digito diferente desdes apresentará a msg:"OPÇÃO INVÁLIDA!"
+                while situation1 not in '0123': 
                     situation1 = str(input(f'''
             OPÇÃO INVÁLIDA!
             Fase {character.stage:02d}
@@ -390,7 +388,7 @@ if __name__ == '__main__':
                     break
                 
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -533,7 +531,7 @@ if __name__ == '__main__':
                 break
 
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -591,7 +589,7 @@ if __name__ == '__main__':
                 break
             
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
             
@@ -663,7 +661,7 @@ if __name__ == '__main__':
                 break
             
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
 
@@ -741,7 +739,7 @@ if __name__ == '__main__':
                 break
 
             if character.statusPar() == True:
-                character.statusPar()
+                # character.statusPar()
                 print(character.lost())
                 break
             else:

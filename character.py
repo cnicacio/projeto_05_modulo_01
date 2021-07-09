@@ -1,10 +1,14 @@
-import os
-from clock import Time
-from time import sleep
-from random import randint
-from datetime import datetime
+#Class Charater é uma bliblioteca criada para dar atribuições aos personagens deste jogo de interação. 
+#Nela conSta as características, habilidades, preferências e comportamentos típicos de cada geração aqui indicada, 
+# a geração Boomer e a Geração Z.
 
-class Character:
+import os               #Biblioteca do sistema operacional.
+from clock import Time  #biblioteca criada para o jogo de interação.
+from time import sleep  #biblioteca para efeitos de pausa no decorrer das interações do jogo.
+from random import randint #biblioteca que gera aleatoriedade onde solicitado.
+from datetime import datetime #biblioteca que atribui ao jogo a data em que ele está sendo jogado.
+
+class Character:        #inicialização da classe de Personagens.
     def __init__(self, name, age, generation, energy=0, money=0, anxiety=0,status=0):
         self.__name = name
         self.__age = age
@@ -15,7 +19,7 @@ class Character:
         self.__generation = generation
         self.__stage = 0
 
-    def __str__(self):
+    def __str__(self):      #definição para mostragem do personagem escolhido por rodada, com seus respectivos status.
         return f'''
         ESTAGIÁRIO {self.generation.upper()}:
 
@@ -29,8 +33,8 @@ class Character:
 
         '''
 
-    def statusDef(self):
-        if self.__status > 0:
+    def statusDef(self):        #De acordo com as escolhas feitas, o status varia, podendo ter como consequência 
+        if self.__status > 0:   #a mudança de geração dos personagens.
             return 'Boomer'
         else:
             return 'Geração Z'
@@ -76,8 +80,8 @@ class Character:
         self.__anxiety -= value
 
    
-    def wakeup(self, choice):
-        if choice == '1':    
+    def wakeup(self, choice):   #De acordo com a escolha do usuário, os índices do status pode aumentar ou diminuir.
+        if choice == '1':       #Essas variações podem melhorar ou piorar a saúde do personagem, e pode até matá-lo.
             self.__energy -= 5
             self.__money -= 0
             self.__anxiety += 10
@@ -88,10 +92,10 @@ class Character:
             self.__anxiety -= 10
             self.__status -= 5
 
-    def meal(self, choice):
+    def meal(self, choice):     #os tipos de refeições escolhidas podem afetar a saúde e o financeiro do personagem.
         if choice == '1':
-            self.__energy += 5
-            self.__money -= 20
+            self.__energy += 5      #O uso de if, elif e else é um agente condicional nessa parte do código,
+            self.__money -= 20      #Esse uso faz com que a escolha seja a única a ser mostrada na execução.
             self.__anxiety -= 20
             self.__status -= 10
             
@@ -113,7 +117,7 @@ class Character:
             self.__anxiety += 20
             self.__status += 0
 
-    def takeshower(self, choice):
+    def takeshower(self, choice):   #essa escolha afeta o tempo e infere a saúde do personagem.
         if choice == '1':
             self.__energy -= 5
             self.__money -= 0
@@ -126,7 +130,7 @@ class Character:
             self.__anxiety += 10
             self.__status -=5 
 
-    def route(self, choice):
+    def route(self, choice):           
         if choice == '1':
             self.__energy -= 10 
             self.__money += 0
@@ -145,7 +149,7 @@ class Character:
             self.__anxiety += 0
             self.__status -= 5
 
-    def bugwork(self, choice):
+    def bugwork(self, choice):  #essa escolha afeta os níveis de ansiedade do personagem, o que pode ser nocivo à vida dele.
         if self.anxiety > 35:
             print('Sua ansiedade está alta demais, você não consegue manter a paciência.')
             sleep(5)
@@ -181,8 +185,8 @@ class Character:
 
     def promotion(self,choice):
         if self.anxiety > 35:
-            print('Sua ansiedade está alta demais, você não consegue manter a paciência.')
-            sleep(5)
+            print('Sua ansiedade está alta demais, você não consegue manter a paciência. Seu chefe te rebaixa de cargo!')
+            sleep(3)
             choice == '3'
             self.__energy -= 20
             self.__money -= 0
@@ -192,18 +196,25 @@ class Character:
                 self.__status+=10
         else:
             if choice == '1':
+                print('''O chefe diz que precisa analisar a possibilidade de aumento, mas
+                retira a proposta ao notar que você não se empolgou com a oportunidade...''')
+                sleep(3)
                 self.__energy -= 10 
                 self.__money += 0
                 self.__anxiety -= 10
                 self.__status += 10
                 
             elif choice == '2':
+                print('Você recebe a notícia de que ganhará um aumento. Parabéns!')
+                sleep(3)
                 self.__energy -= 10
                 self.__money -= 0
                 self.__anxiety += 10
                 self.__status -= 10
             
             else:
+                print('Seu chefe te rebaixa de cargo!')
+                sleep(3)
                 self.__energy -= 20
                 self.__money -= 0
                 self.__anxiety += 20
@@ -224,6 +235,9 @@ class Character:
             self.__money += 0
             self.__anxiety += 20
             self.__status +=10
+#Esse é o programa principal, nele consta as informações de cada personagem.
+#Escolhemos a mostragem geral dos dois personagens afim de que, o usuário 
+#fique ciente das diferenças entre as duas gerações.
 
     def choice(self):
         for i in range(5,0,-1):
@@ -247,10 +261,10 @@ class Character:
 
         Inteligência: 4
         Força: 1
-        Carisma: 0
+        Carisma: 5
         Foco: 3
 
-        Habilidades especial:
+        Habilidade especial:
         Fuxiqueira.
 
 
@@ -266,14 +280,14 @@ class Character:
         Série preferida: qualquer série que tenham vampiros ou zumbis (as vezes zumbis e vampiros se casando)
         Mora com os pais
         Profissão: Jovem Aprendiz
-        Hobbie: YouTuber de games
+        Hobbie: Streamer
 
         Inteligência: 5
         Força: 3
-        Carisma: 4
+        Carisma: 1
         Foco: 0
 
-        Habilidades especial:
+        Habilidade especial:
         Ser multitarefa - consegue aprender qualquer coisa rapidamente mas não domina nenhum tema.
         ''')
 
@@ -324,7 +338,7 @@ class Character:
 
     def clean(self):
         os.system('cls||clear')
-
+#A partir daqui, é mostrada a finalização do jogo e as consequências das escolhar do seu decorrer.
     def statusPar(self):
         if self.energy <= 0 or self.money <= 0 or self.anxiety >= 150:
             if self.energy <= 0:
