@@ -79,7 +79,12 @@ class Character:        #inicialização da classe de Personagens.
     def anxiety(self, value):
         self.__anxiety -= value
 
-   
+    
+    def newday(self, choice):   #De acordo com a escolha do usuário, os índices do status pode aumentar ou diminuir.
+        if choice == 'S':       #Essas variações podem melhorar ou piorar a saúde do personagem, e pode até matá-lo.
+            self.__energy += 50
+            self.__anxiety -= 20
+
     def wakeup(self, choice):   #De acordo com a escolha do usuário, os índices do status pode aumentar ou diminuir.
         if choice == '1':       #Essas variações podem melhorar ou piorar a saúde do personagem, e pode até matá-lo.
             self.__energy -= 5
@@ -197,26 +202,29 @@ class Character:        #inicialização da classe de Personagens.
         else:
             if choice == '1':
                 print('''O chefe diz que precisa analisar a possibilidade de aumento, mas
-                retira a proposta ao notar que você não se empolgou com a oportunidade...''')
+                retira a proposta ao notar que você não se empolgou com a oportunidade...
+                Você receberá 50 dinheiros pelo dia de trabalho''')
                 sleep(3)
                 self.__energy -= 10 
-                self.__money += 0
+                self.__money += 50
                 self.__anxiety -= 10
                 self.__status += 10
                 
             elif choice == '2':
-                print('Você recebe a notícia de que ganhará um aumento. Parabéns!')
+                print('''Você recebe a notícia de que ganhará um aumento. Parabéns!
+                Você receberá 70 dinheiros pelo dia de trabalho''')
                 sleep(3)
                 self.__energy -= 10
-                self.__money -= 0
+                self.__money += 70
                 self.__anxiety += 10
                 self.__status -= 10
             
             else:
-                print('Seu chefe te rebaixa de cargo!')
+                print('''Seu chefe te rebaixa de cargo!
+                Você receberá 30 dinheiros pelo dia de trabalho''')
                 sleep(3)
                 self.__energy -= 20
-                self.__money -= 0
+                self.__money += 30
                 self.__anxiety += 20
                 if self.generation=='boomer':
                     self.__status-=10
@@ -356,8 +364,8 @@ class Character:        #inicialização da classe de Personagens.
         return '''VOCÊ PERDEU! FIM DE JOGO...'''
 
     def genidentity(self):
-        if self.__status != self.__generation:
-            print(f'Você é {self.__generation} e se comportou como um {self.__status} durante o dia! FIM DE JOGO...')
+        if self.statusDef() != self.__generation:
+            print(f'Você é {self.__generation} e se comportou como um {self.statusDef()} durante o dia! FIM DE JOGO...')
             return True
 
     def giveup(self):

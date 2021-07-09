@@ -55,10 +55,10 @@ if __name__ == '__main__':
         character.clean() # limpa o console.
         character.choice() # executa a função escolha para verificar o personagem.
         character.clean() # limpa o console.
-        print(clock)
-        print(character) # status inicial do personagem.
-        lin()
         while True: # enquanto o jogador não quiser sair do jogo ou não matar o personagem.
+            print(clock)
+            print(character) # status inicial do personagem.
+            lin()
             wakeup = str(input(f'''
             Fase {character.stage:02d}
             {character.name}, olha a hora! 
@@ -756,6 +756,7 @@ if __name__ == '__main__':
             if again == 'S':
                 clock.days += 1
                 clock.define(6,0)
+                character.newday(again)
             else:
                 print('Obrigado por jogar!')
                 break
