@@ -1,231 +1,238 @@
-import os
-from clock import Relogio
-from time import sleep
-from random import randint
-from datetime import datetime
+#Class Charater é uma bliblioteca criada para dar atribuições aos personagens deste jogo de interação. 
+#Nela conSta as características, habilidades, preferências e comportamentos típicos de cada geração aqui indicada, 
+# a geração Boomer e a Geração Z.
 
-class Personagem:
-    def __init__(self, nome, idade, geracao, energia=0, dinheiro=0, ansiedade=0,status=0):
-        self.__nome = nome
-        self.__idade = idade
-        self.__energia = energia
-        self.__dinheiro = dinheiro
-        self.__ansiedade = ansiedade
+import os               #Biblioteca do sistema operacional.
+from clock import Time  #biblioteca criada para o jogo de interação.
+from time import sleep  #biblioteca para efeitos de pausa no decorrer das interações do jogo.
+from random import randint #biblioteca que gera aleatoriedade onde solicitado.
+from datetime import datetime #biblioteca que atribui ao jogo a data em que ele está sendo jogado.
+
+class Character:        #inicialização da classe de Personagens.
+    def __init__(self, name, age, generation, energy=0, money=0, anxiety=0,status=0):
+        self.__name = name
+        self.__age = age
+        self.__energy = energy
+        self.__money = money
+        self.__anxiety = anxiety
         self.__status = status
-        self.__geracao = geracao
-        self.__fase = 0
+        self.__generation = generation
+        self.__stage = 0
 
-    def __str__(self):
+    def __str__(self):      #definição para mostragem do personagem escolhido por rodada, com seus respectivos status.
         return f'''
-        ESTAGIÁRIO {self.geracaoDef().upper()}:
+        ESTAGIÁRIO {self.generation.upper()}:
 
-        Personagem: {self.nome}
-        Idade: {self.idade}
-        Energia: {self.energia}
-        Dinheiro: {self.dinheiro}
-        Ansiedade: {self.ansiedade}
-        Geração: {self.geracaoDef()}
+        Personagem: {self.name}
+        Idade: {self.age}
+        Energia: {self.energy}
+        Dinheiro: {self.money}
+        Ansiedade: {self.anxiety}
+        Geração: {self.generation}
         Status Atual: {self.statusDef()}
 
         '''
-    
-    def geracaoDef(self):
-        if self.__nome=='boomer': 
-            return 'Boomer' 
-        else: 
-            return 'Geração Z'
 
-    def statusDef(self):
-        if int(self.status)>=1:
-            return 'Boomer' 
-        else: 
+    def statusDef(self):        #De acordo com as escolhas feitas, o status varia, podendo ter como consequência 
+        if self.__status > 0:   #a mudança de geração dos personagens.
+            return 'Boomer'
+        else:
             return 'Geração Z'
 
     @property
-    def nome(self):
-        return self.__nome 
+    def name(self):
+        return self.__name 
 
     @property
-    def idade(self):
-        return self.__idade
+    def age(self):
+        return self.__age
 
     @property
-    def energia(self):
-        return self.__energia
+    def energy(self):
+        return self.__energy
 
     @property
-    def geracao(self):
-        return self.__geracao
+    def generation(self):
+        return self.__generation
     
     @property
     def status(self):
         return self.__status
 
-    @energia.setter
-    def energia(self, valor):
-        self.__energia += valor
+    @energy.setter
+    def energy(self, value):
+        self.__energy += value
 
     @property
-    def dinheiro(self):
-        return self.__dinheiro
+    def money(self):
+        return self.__money
 
-    @dinheiro.setter
-    def dinheiro(self, valor):
-        self.__dinheiro += valor
+    @money.setter
+    def money(self, value):
+        self.__money += value
 
     @property
-    def ansiedade(self):
-        return self.__ansiedade
+    def anxiety(self):
+        return self.__anxiety
 
-    @ansiedade.setter
-    def ansiedade(self, valor):
-        self.__ansiedade -= valor
+    @anxiety.setter
+    def anxiety(self, value):
+        self.__anxiety -= value
 
    
-    def acordar(self, escolha):
-        if escolha == 1:    
-            self.__energia -= 75
-            self.__dinheiro -= 100
-            self.__ansiedade += 0
-        else:
-            self.__energia -= 100
-            self.__dinheiro -= 50
-            self.__ansiedade += 50
-
-    def refeicao(self, escolha):
-        if escolha == 1:
-            self.__energia += 5
-            self.__dinheiro -= 20
-            self.__ansiedade -= 20
-            self.__status -= 10
-            
-        elif escolha == 2:
-            self.__energia += 5
-            self.__dinheiro -= 5
-            self.__ansiedade -= 5
+    def wakeup(self, choice):   #De acordo com a escolha do usuário, os índices do status pode aumentar ou diminuir.
+        if choice == '1':       #Essas variações podem melhorar ou piorar a saúde do personagem, e pode até matá-lo.
+            self.__energy -= 5
+            self.__money -= 0
+            self.__anxiety += 10
             self.__status += 5
-
-        elif escolha == 3:
-            self.__energia -= 10
-            self.__dinheiro += 0
-            self.__ansiedade += 5
-            self.__status -= 0
         else:
-            self.__energia -= 20
-            self.__dinheiro += 0
-            self.__ansiedade += 20
-            self.__status += 0
-
-    def banho(self, escolha):
-        if escolha == 1:
-            self.__energia -= 5
-            self.__dinheiro -= 0
-            self.__ansiedade -= 10
-            self.__status += 5
-            
-        else:
-            self.__energia -= 0
-            self.__dinheiro += 0
-            self.__ansiedade += 10
-            self.__status -=5 
-
-    def trajeto(self,escolha):
-        if escolha == 1:
-            self.__energia -= 10 
-            self.__dinheiro += 0
-            self.__ansiedade -= 10
-            self.__status += 5
-            
-        elif escolha == 2:
-            self.__energia -= 5
-            self.__dinheiro -= 5
-            self.__ansiedade += 5
-            self.__status += 0
-
-        else:
-            self.__energia -= 5
-            self.__dinheiro -= 20
-            self.__ansiedade += 0
+            self.__energy += 5
+            self.__money -= 0
+            self.__anxiety -= 10
             self.__status -= 5
 
-    def bugtrabalho(self,escolha):
-        if self.__ansiedade>35:
-            print('Sua ansiedade está alta demais, você não consegue manter a paciência.')
-            escolha = 3
-            self.__energia -= 20
-            self.__dinheiro -= 0
-            if self.__geracao=='boomer':
-                self.__status-=10
-            else:
-                self.__status+=10
-        else:
-            if escolha == 1:
-                self.__energia -= 10 
-                self.__dinheiro += 0
-                self.__ansiedade -= 10
-                self.__status += 10
-                
-            elif escolha == 2:
-                self.__energia -= 10
-                self.__dinheiro -= 0
-                self.__ansiedade += 10
-                self.__status -= 10
+    def meal(self, choice):     #os tipos de refeições escolhidas podem afetar a saúde e o financeiro do personagem.
+        if choice == '1':
+            self.__energy += 5      #O uso de if, elif e else é um agente condicional nessa parte do código,
+            self.__money -= 20      #Esse uso faz com que a escolha seja a única a ser mostrada na execução.
+            self.__anxiety -= 20
+            self.__status -= 10
             
-            else:
-                self.__energia -= 20
-                self.__dinheiro -= 0
-                self.__ansiedade += 20
-                if self.__geracao=='boomer':
-                    self.__status-=10
-                else:
-                    self.__status+=10
+        elif choice == '2':
+            self.__energy += 5
+            self.__money -= 5
+            self.__anxiety -= 5
+            self.__status += 5
 
-    def promocao(self,escolha):
-        if self.__ansiedade>35:
+        elif choice == '3':
+            self.__energy -= 10
+            self.__money += 0
+            self.__anxiety += 5
+            self.__status -= 0
+
+        else:
+            self.__energy -= 20
+            self.__money += 0
+            self.__anxiety += 20
+            self.__status += 0
+
+    def takeshower(self, choice):   #essa escolha afeta o tempo e infere a saúde do personagem.
+        if choice == '1':
+            self.__energy -= 5
+            self.__money -= 0
+            self.__anxiety -= 10
+            self.__status += 5
+            
+        else:
+            self.__energy -= 0
+            self.__money += 0
+            self.__anxiety += 10
+            self.__status -=5 
+
+    def route(self, choice):           
+        if choice == '1':
+            self.__energy -= 10 
+            self.__money += 0
+            self.__anxiety -= 10
+            self.__status += 5
+            
+        elif choice == '2':
+            self.__energy -= 5
+            self.__money -= 5
+            self.__anxiety += 5
+            self.__status += 0
+
+        else:
+            self.__energy -= 5
+            self.__money -= 20
+            self.__anxiety += 0
+            self.__status -= 5
+
+    def bugwork(self, choice):  #essa escolha afeta os níveis de ansiedade do personagem, o que pode ser nocivo à vida dele.
+        if self.anxiety > 35:
             print('Sua ansiedade está alta demais, você não consegue manter a paciência.')
-            escolha = 3
-            self.__energia -= 20
-            self.__dinheiro -= 0
-            if self.__geracao=='boomer':
+            sleep(5)
+            choice == '3'
+            self.__energy -= 20
+            self.__money -= 0
+            self.__anxiety += 20
+            if self.generation=='boomer':
+                self.__status-=10
+            else:
+                self.__status+=10
+        
+        if choice == '1':
+            self.__energy -= 10 
+            self.__money += 0
+            self.__anxiety -= 10
+            self.__status += 10
+            
+        elif choice == '2':
+            self.__energy -= 10
+            self.__money -= 0
+            self.__anxiety += 10
+            self.__status -= 10
+        
+        else:
+            self.__energy -= 20
+            self.__money -= 0
+            self.__anxiety += 20
+            if self.generation=='boomer':
+                self.__status-=10
+            else:
+                self.__status+=10
+
+    def promotion(self,choice):
+        if self.anxiety > 35:
+            print('Sua ansiedade está alta demais, você não consegue manter a paciência.')
+            sleep(5)
+            choice == '3'
+            self.__energy -= 20
+            self.__money -= 0
+            if self.generation=='boomer':
                 self.__status-=10
             else:
                 self.__status+=10
         else:
-            if escolha == 1:
-                self.__energia -= 10 
-                self.__dinheiro += 0
-                self.__ansiedade -= 10
+            if choice == '1':
+                self.__energy -= 10 
+                self.__money += 0
+                self.__anxiety -= 10
                 self.__status += 10
                 
-            elif escolha == 2:
-                self.__energia -= 10
-                self.__dinheiro -= 0
-                self.__ansiedade += 10
+            elif choice == '2':
+                self.__energy -= 10
+                self.__money -= 0
+                self.__anxiety += 10
                 self.__status -= 10
             
             else:
-                self.__energia -= 20
-                self.__dinheiro -= 0
-                self.__ansiedade += 20
-                if self.__geracao=='boomer':
+                self.__energy -= 20
+                self.__money -= 0
+                self.__anxiety += 20
+                if self.generation=='boomer':
                     self.__status-=10
                 else:
                     self.__status+=10
     
-    def happyhour(self, escolha):
-        if escolha == 1:
-            self.__energia -= 20
-            self.__dinheiro -= 0
-            self.__ansiedade -= 20
+    def happyhour(self, choice):
+        if choice == '1':
+            self.__energy -= 20
+            self.__money -= 0
+            self.__anxiety -= 20
             self.__status -= 10
             
         else:
-            self.__energia -= 5
-            self.__dinheiro += 0
-            self.__ansiedade += 20
+            self.__energy -= 5
+            self.__money += 0
+            self.__anxiety += 20
             self.__status +=10
+#Esse é o programa principal, nele consta as informações de cada personagem.
+#Escolhemos a mostragem geral dos dois personagens afim de que, o usuário 
+#fique ciente das diferenças entre as duas gerações.
 
-    def escolha(self):
+    def choice(self):
         for i in range(5,0,-1):
             print(f'CARREGANDO INFORMAÇÕES EM {i}...\n')
             sleep(1)
@@ -247,7 +254,7 @@ class Personagem:
 
         Inteligência: 4
         Força: 1
-        Carisma: 0
+        Carisma: 5
         Foco: 3
 
         Habilidades especial:
@@ -266,72 +273,87 @@ class Personagem:
         Série preferida: qualquer série que tenham vampiros ou zumbis (as vezes zumbis e vampiros se casando)
         Mora com os pais
         Profissão: Jovem Aprendiz
-        Hobbie: YouTuber de games
+        Hobbie: Streamer
 
         Inteligência: 5
         Força: 3
-        Carisma: 4
+        Carisma: 1
         Foco: 0
 
         Habilidades especial:
         Ser multitarefa - consegue aprender qualquer coisa rapidamente mas não domina nenhum tema.
         ''')
 
-        escolha = str(input('''
+        choice = str(input('''
         CHOOSE YOUR FIGHTER
         [1] DONA CIDA
         [2] ENZO GABRIEL
         [3] ALEATÓRIO
 
         ''')).strip().upper()[0]
-        while escolha not in '123':
-            escolha = str(input('''
+        while choice not in '123':
+            choice = str(input('''
             OPÇÃO INVÁLIDA!
             CHOOSE YOUR FIGHTER
             [1] DONA CIDA
             [2] ENZO GABRIEL
             [3] ALEATÓRIO
             ''')).strip().upper()[0]
-        if escolha == '3':
-            escolha = str(randint(1,2))
-        if escolha == '1':
-            self.__nome = 'Dona Cida'
-            self.__idade = datetime.now().year - 1957
-            self.__energia = 50
-            self.__dinheiro = 100
-            self.__ansiedade = 0
+        if choice == '3':
+            choice = str(randint(1,2))
+        if choice == '1':
+            self.__name = 'Dona Cida'
+            self.__age = datetime.now().year - 1957
+            self.__energy = 50
+            self.__money = 100
+            self.__anxiety = 0
+            self.__generation = 'Boomer'
+            self.__status = 1
         else:
-            self.__nome = 'Enzo Gabriel'
-            self.__idade = datetime.now().year - 2003
-            self.__energia = 100
-            self.__dinheiro = 50
-            self.__ansiedade = 50
+            self.__name = 'Enzo Gabriel'
+            self.__age = datetime.now().year - 2003
+            self.__energy = 100
+            self.__money = 50
+            self.__anxiety = 50
+            self.__generation = 'Geração Z'
+            self.__status = -1
 
-        personagem = Personagem(self.__nome, self.__idade, self.__energia, self.__dinheiro, self.__ansiedade, 0)
+        character = Character(self.__name, self.__age, self.__energy, self.__money, self.__anxiety, self.__status)
         print(f'''
         PERSONAGEM ESCOLHIDO!!
-        {personagem.nome.upper()}
+        {character.name.upper()}
         CARREGANDO A PRÓXIMA FASE...
         ''')
         sleep(5)
 
-    def passar_fase(self):
-        self.__fase += 1
+    def next_stage(self):
+        self.stage += 1
 
-    def limpar(self):
+    def clean(self):
         os.system('cls||clear')
-
+#A partir daqui, é mostrada a finalização do jogo e as consequências das escolhar do seu decorrer.
     def statusPar(self):
-        if self.__energia <= 0 or self.__dinheiro <= 0 or self.__ansiedade >= 150:
-            True
+        if self.energy <= 0 or self.money <= 0 or self.anxiety >= 150:
+            if self.energy <= 0:
+                print(f'{self.name} morreu por falta de energia.')
+            elif self.money <= 0:
+                print(f'{self.name} ficou sem dinheiro.')
+            elif self.anxiety >= 150:
+                print(f'{self.name} morreu de ansiedade.')
+            return True
 
-    def venceu(self):
+    def win(self):
         return '''VOCÊ VENCEU! PARABÉNS, CHEGOU VIVO AO FINAL DE UM DIA DE TRABALHO!'''
 
-    def perdeu(self):
+    def lost(self):
         return '''VOCÊ PERDEU! FIM DE JOGO...'''
 
-    def desistir(self):
+    def genidentity(self):
+        if self.__status != self.__generation:
+            print(f'Você é {self.__generation} e se comportou como um {self.__status} durante o dia! FIM DE JOGO...')
+            return True
+
+    def giveup(self):
         return '''
         JÁ DESISTIU?
         TINHA QUE SER O ESTAGIÁRIO MESMO!
