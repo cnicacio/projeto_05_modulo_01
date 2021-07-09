@@ -17,7 +17,6 @@ class Character:        #inicialização da classe de Personagens.
         self.__anxiety = anxiety
         self.__status = status
         self.__generation = generation
-        self.__stage = 0
 
     def __str__(self):      #definição para mostragem do personagem escolhido por rodada, com seus respectivos status.
         return f'''
